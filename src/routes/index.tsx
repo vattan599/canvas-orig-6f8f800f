@@ -1,27 +1,70 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
+
+import homeCss from "../paratha/home.css?url";
+import { CONFIG, FONTS_HREF, HOME_BODY, HOME_JSONLD } from "../paratha/content.gen";
+import { init as initCommon } from "../paratha/common";
+import { init as initOrder } from "../paratha/order";
+
+const SITE = "https://parathaland.ca";
+const OG_IMAGE =
+  "https://vibe.filesafe.space/1795068409232920594/assets/4d74c7ff-273e-4b5a-ab9e-40dc3b632cd2.jpg";
+const TITLE = "Paratha Land | Aloo Paratha & Punjabi Food in Langley, BC – Order Online";
+const DESC =
+  "Hand-stuffed aloo, gobi and paneer parathas, curries and rice bowls in Langley, BC. 100% vegetarian Punjabi food. Order online for pickup at in-store prices, plus catering and food truck for events.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Blank Canvas" },
-      {
-        name: "description",
-        content: "A clean, empty starting canvas — ready for your next idea.",
-      },
-      { property: "og:title", content: "Blank Canvas" },
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { name: "robots", content: "index,follow,max-image-preview:large" },
+      { name: "geo.region", content: "CA-BC" },
+      { name: "geo.placename", content: "Langley" },
+      { name: "theme-color", content: "#3d0a12" },
+      { property: "og:type", content: "restaurant.restaurant" },
+      { property: "og:site_name", content: "Paratha Land" },
+      { property: "og:title", content: "Paratha Land: hand-stuffed parathas in Langley, BC" },
       {
         property: "og:description",
-        content: "A clean, empty starting canvas — ready for your next idea.",
+        content:
+          "Aloo, gobi, paneer and makki methi parathas, made fresh. Order online for pickup, or book catering and our food truck.",
       },
-      { property: "og:type", content: "website" },
+      { property: "og:url", content: `${SITE}/` },
+      { property: "og:image", content: OG_IMAGE },
+      { property: "og:locale", content: "en_CA" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: OG_IMAGE },
     ],
+    links: [
+      { rel: "canonical", href: `${SITE}/` },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: FONTS_HREF },
+      { rel: "stylesheet", href: homeCss },
+    ],
+    scripts: [{ type: "application/ld+json", children: HOME_JSONLD }],
   }),
-  component: BlankCanvas,
+  component: Home,
 });
 
-function BlankCanvas() {
-  return (
-    <main className="relative flex min-h-screen w-full items-center justify-center bg-background font-body text-foreground" />
-  );
+function Home() {
+  useEffect(() => {
+    const ac = new AbortController();
+    // Deferred so React StrictMode's double-run in dev only starts the page once.
+    const t = window.setTimeout(() => {
+      (window as unknown as { PL: unknown }).PL = structuredClone(CONFIG);
+      initCommon(ac.signal);
+      initOrder(ac.signal);
+      import("../paratha/scene").then((m) => {
+        if (!ac.signal.aborted) m.init(ac.signal);
+      });
+    }, 0);
+    return () => {
+      window.clearTimeout(t);
+      ac.abort();
+    };
+  }, []);
+
+  return <div dangerouslySetInnerHTML={{ __html: HOME_BODY }} />;
 }
