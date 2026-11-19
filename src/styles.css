@@ -48,6 +48,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-rust: var(--rust);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -67,6 +68,7 @@
 
 :root {
   --radius: 0.625rem;
+  --rust: oklch(0.62 0.15 45);
   /* Paper & Ink palette */
   --background: oklch(0.96 0.008 75);
   --foreground: oklch(0.18 0.005 75);
@@ -122,6 +124,7 @@
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.55 0.006 75);
+  --rust: oklch(0.72 0.15 45);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
