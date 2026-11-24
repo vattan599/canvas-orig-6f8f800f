@@ -6,10 +6,12 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  ClientOnly,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import chatCss from "../components/chat-widget/chat-widget.css?url";
 import { reportVibeError } from "../lib/vibe-error-reporting";
 
 function NotFoundComponent() {
@@ -94,6 +96,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "stylesheet",
+        href: chatCss,
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -111,9 +117,21 @@ function RootShell({ children }: { children: ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <ClientOnly fallback={null}>
+          <ChatWidgetMount />
+        </ClientOnly>
       </body>
     </html>
   );
+}
+
+function ChatWidgetMount() {
+  const [Chat, setChat] = useState<{ ChatWidget: () => React.JSX.Element } | null>(null);
+  useEffect(() => {
+    import("../components/chat-widget").then((m) => setChat({ ChatWidget: m.ChatWidget }));
+  }, []);
+  if (!Chat) return null;
+  return <Chat.ChatWidget />;
 }
 
 function RootComponent() {
