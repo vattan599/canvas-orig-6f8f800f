@@ -83,7 +83,8 @@ Key facts:
 - Single aloo paratha: {B.price("Aloo Paratha")}
 - Ordering: online for pickup at {D}/#order, or by phone
 - Catering and food truck bookings: {D}/catering
-- Hours and reviews: Google Business Profile for Paratha Land, Langley
+- Hours (Pacific time): {B.HOURS_SUMMARY}. Open late, until 4:30 a.m.
+- Reviews: Google Business Profile for Paratha Land, Langley
 - Logo: {D}/brand/logo.jpg
 
 Social profiles:

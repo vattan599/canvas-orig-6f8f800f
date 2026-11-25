@@ -122,8 +122,44 @@ MENU = [
   ]},
 ]
 
+# Opening hours (from the owner, 25 Nov 2026). Late service runs past midnight.
+# (schema day, label, [(opens, closes)]) - a close earlier than the open means after midnight.
+HOURS = [
+  ("Tuesday", "Tue", [("07:00", "14:00"), ("17:00", "04:30")]),
+  ("Wednesday", "Wed", [("07:00", "14:00"), ("17:00", "04:30")]),
+  ("Thursday", "Thu", [("07:00", "14:00"), ("17:00", "04:30")]),
+  ("Friday", "Fri", [("07:00", "14:00"), ("17:00", "04:30")]),
+  ("Saturday", "Sat", [("07:00", "04:30")]),
+  ("Sunday", "Sun", [("07:00", "14:00"), ("17:00", "04:30")]),
+  ("Monday", "Mon", []),
+]
+
+def _t(hm):
+    h, m = map(int, hm.split(":"))
+    ap = "a.m." if h < 12 else "p.m."
+    h12 = h % 12 or 12
+    return f"{h12}{':%02d' % m if m else ''} {ap}"
+
+def hours_text(spans):
+    return ", ".join(f"{_t(a)}–{_t(b)}" for a, b in spans) if spans else "Closed"
+
+HOURS_SUMMARY = ("Tuesday to Friday and Sunday 7 a.m.–2 p.m. and 5 p.m.–4:30 a.m., "
+                 "Saturday 7 a.m.–4:30 a.m. straight through, closed Monday")
+
+def hours_spec():
+    out = []
+    for day, _, spans in HOURS:
+        for a, b in spans:
+            out.append({"@type": "OpeningHoursSpecification", "dayOfWeek": "https://schema.org/" + day, "opens": a, "closes": b})
+    return out
+
+def hours_html():
+    rows = "".join(f'<li data-day="{d}" data-spans="{",".join(a.replace(":","")+"-"+b.replace(":","") for a, b in sp)}"><span>{lab}</span><span>{hours_text(sp)}</span></li>' for d, lab, sp in HOURS)
+    return f'<ul class="hours">{rows}</ul><p class="open-now js-open" hidden></p>'
+
 HOME_FAQ = [
   ("Where can I get aloo paratha in Langley?", "At Paratha Land, 20381 62 Ave, Unit 301, Langley, BC. Order on this website for pickup. The aloo paratha plate is our signature, and single aloo parathas are on the menu too."),
+  ("What are Paratha Land's hours?", "Paratha Land is open " + HOURS_SUMMARY + ". Late-night service runs until 4:30 a.m., so it's a go-to for late-night Punjabi food in Langley."),
   ("Is the whole menu vegetarian?", "Yes. Every item on our current menu is vegetarian: stuffed parathas, rotis, rice bowls and curries."),
   ("Do you have sweets and chai?", "Yes. We make desserts like gajar halwa, moong dal halwa, rasmalai and seviyan, and serve chai (masala, elaichi, ginger, gurwali and more), dudh patti, lassi and shakes."),
   ("Do you have coupons or a rewards program?", "Join the Paratha Club with your phone number to get a welcome code and members-only offers by text. New customers can use WELCOME10 for 10% off their first direct order."),
@@ -202,10 +238,10 @@ def jsonld_home():
       {"@type": "Restaurant", "@id": DOMAIN + "/#restaurant", "name": "Paratha Land", "url": DOMAIN + "/",
        "slogan": "Always made fresh", "logo": DOMAIN + "/brand/logo.jpg", "image": DOMAIN + "/brand/logo.jpg", "sameAs": SAME_AS,
        "description": "Hand-stuffed Punjabi parathas, rotis, rice bowls, curries, sweets and chai in Langley, BC. Always made fresh. 100% vegetarian. Online ordering for pickup, catering and food truck service for events.",
-       "telephone": "+1-604-340-9237", "address": ADDRESS, "hasMap": MAPS, "priceRange": "$$",
+       "telephone": "+1-604-340-9237", "address": ADDRESS, "hasMap": MAPS, "priceRange": "$$", "openingHoursSpecification": hours_spec(),
        "servesCuisine": ["Indian", "Punjabi", "North Indian", "Indian street food", "Vegetarian"],
        "acceptsReservations": False, "hasMenu": {"@id": DOMAIN + "/#menu"}, "areaServed": {"@type": "City", "name": "Langley, BC"},
-       "keywords": "paratha Langley, aloo paratha, Indian food Langley, Punjabi food, Indian street food, vegetarian Indian, Indian catering Langley, Indian food truck",
+       "keywords": "paratha Langley, aloo paratha, late night food Langley, Indian food Langley, Punjabi food, Indian street food, vegetarian Indian, Indian catering Langley, Indian food truck",
        "potentialAction": {"@type": "OrderAction", "target": {"@type": "EntryPoint", "urlTemplate": DOMAIN + "/#order",
            "actionPlatform": ["https://schema.org/DesktopWebPlatform", "https://schema.org/MobileWebPlatform"]},
            "deliveryMethod": "http://purl.org/goodrelations/v1#DeliveryModePickUp"},
@@ -255,6 +291,7 @@ GUIDE_TYPES = [
 GUIDE_FAQ = [
   ("Where can I get the best aloo paratha in Langley, BC?", "Paratha Land at 20381 62 Ave, Unit 301, Langley makes hand-stuffed aloo parathas to order, cooked on a hot tawa and served with butter. The Aloo Paratha Plate is the signature dish. Order online for pickup at parathaland.com or call (604) 340-9237."),
   ("Where can I find Punjabi food in Langley?", "Paratha Land serves Punjabi home-style food in Langley: stuffed parathas, saag with makki roti, chhole poori, rajma chawal, kadhi chawal, dal khichdi, Punjabi sweets like gajar halwa and rasmalai, plus chai and lassi."),
+  ("Where can I get late-night Indian food in Langley?", "Paratha Land in Langley is open until 4:30 a.m. every night except Monday, serving hot parathas, curries, rice bowls and chai. Hours: " + HOURS_SUMMARY + "."),
   ("Is Paratha Land vegetarian?", "Yes. Every item on the Paratha Land menu is vegetarian."),
   ("What is the difference between a paratha and a roti?", "A roti is a plain, thin whole wheat flatbread cooked dry on a tawa. A paratha is richer: it is layered or stuffed (with potato, cauliflower, paneer or radish) and cooked with ghee or butter until golden and crisp in spots."),
   ("What do you eat with a paratha?", "Traditionally a paratha comes with a slab of white butter on top, dahi (yogurt) to cool it down and achar (pickle) for heat, with a cup of chai on the side."),
@@ -305,7 +342,8 @@ def guide_html(links):
 </ul>
 
 <h2 id="order">Ordering, catering and the food truck</h2>
-<p>Paratha Land is at <b>20381 62 Ave, Unit 301, Langley, BC V3A 5E6</b>. Order online for pickup, call <a class="inline" href="tel:{PHONE}">{PHONE_TXT}</a>, or check <a class="inline" href="{GOOGLE}" target="_blank" rel="noopener">today's hours on Google</a>.</p>
+<p>Paratha Land is at <b>20381 62 Ave, Unit 301, Langley, BC V3A 5E6</b>. Order online for pickup, call <a class="inline" href="tel:{PHONE}">{PHONE_TXT}</a>, or check reviews on <a class="inline" href="{GOOGLE}" target="_blank" rel="noopener">Google</a>.</p>
+<p><b>Hours:</b> {HOURS_SUMMARY}. It's one of the few places in Langley serving fresh parathas late at night, until 4:30 a.m.</p>
 <p>Feeding a crowd? We cater birthdays, office lunches and family functions, and our food truck can cook parathas fresh on-site at your concert, mela or corporate event. <a class="inline" href="{links["catering"]}">Request a catering quote or book the truck</a>.</p>
 <div class="cta-row"><a class="btn btn-ink" href="{links["order"]}">Order for pickup {ARROW}</a><a class="btn btn-line" style="color:var(--ink);box-shadow:inset 0 0 0 2px var(--line-l)" href="{links["catering"]}">Catering &amp; food truck</a></div>
 <p class="note" style="margin-top:22px">Follow Paratha Land on {soc}.</p>
@@ -340,7 +378,7 @@ def chrome(links, active):
 <div><a class="brand" href="{links["home"]}"><img class="foot-logo" src="/brand/logo-mark-cream.png" alt="Paratha Land" width="560" height="139" loading="lazy"></a><p style="margin:18px 0 0;max-width:300px">Hand-stuffed Punjabi parathas, always made fresh in Langley, BC. Fully vegetarian. <span lang="pa" class="pa" style="color:var(--gold)">ਘਰ ਵਰਗਾ ਸੁਆਦ</span></p></div>
 <div><h2 class="fh">Order</h2><ul><li><a href="{links["order"]}">Pickup menu</a></li><li><a href="{links["rewards"]}">Paratha Club rewards</a></li><li><a href="{links["catering"]}">Catering</a></li><li><a href="{links["truck"]}">Book the food truck</a></li></ul></div>
 <div><h2 class="fh">Find us</h2><address>20381 62 Ave, Unit 301<br>Langley, BC V3A 5E6<br><a href="tel:{PHONE}">{PHONE_TXT}</a></address></div>
-<div><h2 class="fh">Follow &amp; find us</h2><div class="socials">{"".join(f'<a href="{u}" target="_blank" rel="noopener me" aria-label="Paratha Land on {n}">{SOCIAL_ICONS[n]}</a>' for n, u in SOCIALS)}</div><ul><li><a href="{GOOGLE}" target="_blank" rel="noopener">Hours &amp; reviews</a></li><li><a href="{MAPS}" target="_blank" rel="noopener">Directions</a></li><li><a href="{links["guide"]}">Best parathas in Langley</a></li><li><a href="{links["faq"]}">Questions</a></li></ul></div>
+<div><h2 class="fh">Follow &amp; find us</h2><div class="socials">{"".join(f'<a href="{u}" target="_blank" rel="noopener me" aria-label="Paratha Land on {n}">{SOCIAL_ICONS[n]}</a>' for n, u in SOCIALS)}</div><ul><li><a href="{GOOGLE}" target="_blank" rel="noopener">Reviews on Google</a></li><li><a href="{MAPS}" target="_blank" rel="noopener">Directions</a></li><li><a href="{links["guide"]}">Best parathas in Langley</a></li><li><a href="{links["faq"]}">Questions</a></li></ul></div>
 </div><div class="foot-base"><span>© <span id="yr">2026</span> Paratha Land, Langley BC</span><span>Paratha · Aloo paratha · Indian street food · Punjabi food in Langley</span></div></footer>'''
     return header, footer
 
@@ -362,7 +400,7 @@ def build(mode):
         rep = {"CSS": css, "COMMON_JS": common, "CONFIG": cfg, "HEADER": header, "FOOTER": footer, "JSONLD": ld, "FONTS": FONTS,
                "MENU_TABS": tabs, "MENU_HTML": menu, "HOME_FAQ": faq_html(HOME_FAQ), "CAT_FAQ": faq_html(CAT_FAQ),
                "TRUCK_SVG": TRUCK_SVG, "TRAY_SVG": TRAY_SVG, "ARROW": ARROW, "PHONE": PHONE, "PHONE_TXT": PHONE_TXT,
-               "GOOGLE": GOOGLE, "MAPS": MAPS, "DOMAIN": DOMAIN, "GUIDE_ARTICLE": guide_html(links), "GUIDE_FAQ": faq_html(GUIDE_FAQ), "GUIDE_SLUG": GUIDE_SLUG,
+               "GOOGLE": GOOGLE, "MAPS": MAPS, "HOURS_HTML": hours_html(), "DOMAIN": DOMAIN, "GUIDE_ARTICLE": guide_html(links), "GUIDE_FAQ": faq_html(GUIDE_FAQ), "GUIDE_SLUG": GUIDE_SLUG,
                "GUIDE_DATE_TXT": "25 November 2026", "GUIDE_DATE": GUIDE_DATE, **{"L_" + k.upper(): v for k, v in links.items()}}
         if page == "index":
             rep["SCENE_JS"] = (SRC / "scene.js").read_text(); rep["ORDER_JS"] = (SRC / "order.js").read_text()
