@@ -13,6 +13,7 @@ body {
   --gold: #f3b53f;
   --gold2: #ffd27a;
   --marigold: #ee7a1c;
+  --accent: #a8480a;
   --pink: #e04d7c;
   --green: #2e6b3c;
   --cream: #fbf1dc;
@@ -106,22 +107,15 @@ svg {
   gap: 12px;
   text-decoration: none;
 }
-.brand-mark {
-  width: 44px;
-  height: 44px;
-  flex: none;
-}
-.brand b {
+.brand-logo {
   display: block;
-  font: 400 25px/1 var(--display);
-  color: var(--cream);
-  letter-spacing: 0.005em;
+  width: 220px;
+  height: auto;
 }
-.brand small {
+.foot-logo {
   display: block;
-  font: 700 13px/1.2 var(--body);
-  color: var(--gold);
-  margin-top: 3px;
+  width: 240px;
+  height: auto;
 }
 .nav ul {
   display: flex;
@@ -283,7 +277,7 @@ svg {
   position: relative;
 }
 .light .stamp {
-  color: var(--marigold);
+  color: var(--accent);
 }
 .sec {
   padding: clamp(64px, 9vw, 120px) var(--pad);
@@ -299,7 +293,7 @@ svg {
   text-wrap: balance;
 }
 .h2 .hi {
-  color: var(--marigold);
+  color: var(--accent);
 }
 .dark .h2 .hi {
   color: var(--gold);
@@ -348,7 +342,7 @@ svg {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--marigold);
+  border-color: var(--accent);
   outline: none;
 }
 .grid2 {
@@ -430,7 +424,7 @@ svg {
 .faq summary::after {
   content: "+";
   font: 400 30px/1 var(--display);
-  color: var(--marigold);
+  color: var(--accent);
   transition: transform 0.3s var(--ease);
 }
 .faq details[open] summary::after {
@@ -536,8 +530,8 @@ svg {
   .foot-grid {
     grid-template-columns: 1fr;
   }
-  .brand b {
-    font-size: 22px;
+  .brand-logo {
+    width: 168px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -634,7 +628,7 @@ svg {
 .how li b {
   display: block;
   font: 700 34px/1 var(--body);
-  color: var(--marigold);
+  color: var(--accent);
   margin-bottom: 12px;
 }
 .how h3 {
@@ -699,7 +693,7 @@ svg {
 }
 .fsec {
   font: 400 15px/1 var(--stamp);
-  color: var(--marigold);
+  color: var(--accent);
   margin: 8px 0 -4px;
 }
 .crumbs {

@@ -5,6 +5,8 @@
 - Address: 20381 62 Ave, Unit 301, Langley, BC V3A 5E6, Canada
 - Phone: (604) 340-9237
 - Cuisine: Punjabi, North Indian, Indian street food, 100% vegetarian
+- Tagline: Always made fresh
+- Logo: https://parathaland.ca/brand/logo.jpg
 - Signature dish: Aloo paratha plate (two potato-stuffed parathas with curd and pickle)
 - Order online for pickup: https://parathaland.ca/#order
 - Catering and food truck bookings: https://parathaland.ca/catering
