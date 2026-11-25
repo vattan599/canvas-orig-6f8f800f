@@ -183,7 +183,7 @@ def jsonld_catering():
 def chrome(links, active):
     nav = [("Menu", links["order"]), ("Catering & truck", links["catering"]), ("Rewards", links["rewards"]), ("Visit", links["visit"])]
     lis = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if t == active else ""}>{t}</a></li>' for t, h in nav)
-    header = f'''<header class="nav"><a class="brand" href="{links["home"]}"><img class="brand-logo" src="/brand/logo-mark-cream.png" alt="Paratha Land" width="560" height="139"></a>
+    header = f'''<header class="nav"><a class="brand" href="{links["home"]}"><img class="brand-logo" src="/brand/logo-mark-ink.png" alt="Paratha Land" width="560" height="139"></a>
 <nav aria-label="Main"><ul>{lis}</ul></nav>
 <a class="btn btn-gold nav-cta" href="{links["order"]}">Order pickup</a>
 <button class="burger" type="button" data-menu-open aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header>
