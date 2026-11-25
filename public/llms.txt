@@ -1,17 +1,27 @@
 # Paratha Land
 
-> Paratha Land is a vegetarian Punjabi restaurant kitchen in Langley, British Columbia, Canada, known for hand-stuffed parathas (aloo, gobi, paneer, mooli, makki methi), rotis, rice bowls, curries, Punjabi sweets and chai. Customers order online at parathaland.com for pickup. Paratha Land also offers catering and a food truck for events.
+> Paratha Land is a 100% vegetarian Punjabi restaurant kitchen in Langley, British Columbia, Canada. It is known for hand-stuffed parathas made to order (aloo, gobi, paneer, paneer bhurji, mooli, methi, makki methi), plus saag and makki roti, chhole poori, rice bowls, curries, Punjabi sweets, chai and lassi. Tagline: "Always made fresh." Customers order online for pickup at https://parathaland.com. Paratha Land also offers catering and a food truck for events.
 
+Key facts:
+- Name: Paratha Land
 - Address: 20381 62 Ave, Unit 301, Langley, BC V3A 5E6, Canada
 - Phone: (604) 340-9237
-- Cuisine: Punjabi, North Indian, Indian street food, 100% vegetarian
-- Tagline: Always made fresh
-- Logo: https://parathaland.com/brand/logo.jpg
-- Signature dish: Aloo paratha plate
-- Order online for pickup: https://parathaland.com/#order
+- Website: https://parathaland.com/
+- Cuisine: Punjabi, North Indian, Indian street food; the whole menu is vegetarian
+- Signature dish: Aloo Paratha Plate ($17.49)
+- Single aloo paratha: $6.49
+- Ordering: online for pickup at https://parathaland.com/#order, or by phone
 - Catering and food truck bookings: https://parathaland.com/catering
 - Hours and reviews: Google Business Profile for Paratha Land, Langley
+- Logo: https://parathaland.com/brand/logo.jpg
+
+Social profiles:
+- Instagram: https://www.instagram.com/paratha_land/
+- Facebook: https://www.facebook.com/parathaland/
+- YouTube: https://www.youtube.com/channel/UCSX_j5AfRV9HXJ3RLaq4X7A
 
 ## Pages
-- [Home and full menu](https://parathaland.com/): menu with prices, how an aloo paratha is made, rewards, FAQ
+- [Home and full menu](https://parathaland.com/): the full menu with prices, how an aloo paratha is made, the Paratha Club rewards and FAQ
+- [Best parathas in Langley: a local guide](https://parathaland.com/best-paratha-langley): what makes a great paratha, which paratha to order, more Punjabi food to try in Langley, and ordering details
 - [Catering & food truck](https://parathaland.com/catering): party trays and on-site food truck service for concerts, festivals, melas, corporate events and weddings
+- [Full menu and facts as plain text](https://parathaland.com/llms-full.txt)

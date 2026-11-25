@@ -45,6 +45,7 @@ export function init(signal: AbortSignal) {
   const drawer = $("#cart"),
     scrim = $("#scrim");
   const open = () => {
+    drawer.inert = false;
     drawer.classList.add("open");
     scrim.classList.add("open");
     drawer.setAttribute("aria-hidden", "false");
@@ -54,6 +55,7 @@ export function init(signal: AbortSignal) {
     drawer.classList.remove("open");
     scrim.classList.remove("open");
     drawer.setAttribute("aria-hidden", "true");
+    drawer.inert = true;
   };
   $$("[data-cart-open]").forEach((b) => b.addEventListener("click", open));
   $$("[data-cart-close]").forEach((b) => b.addEventListener("click", close));

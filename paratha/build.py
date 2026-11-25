@@ -8,6 +8,11 @@ DOMAIN = "https://parathaland.com"
 PHONE, PHONE_TXT = "+16043409237", "(604) 340-9237"
 GOOGLE = "https://share.google/xiSuF9gGfN1qYML7r"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Paratha+Land+20381+62+Ave+Unit+301+Langley+BC"
+SOCIALS = [("Instagram", "https://www.instagram.com/paratha_land/"), ("Facebook", "https://www.facebook.com/parathaland/"), ("YouTube", "https://www.youtube.com/channel/UCSX_j5AfRV9HXJ3RLaq4X7A")]
+SAME_AS = [u for _, u in SOCIALS]
+SOCIAL_ICONS = {'Instagram': '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>', 'Facebook': '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z" fill="currentColor"/></svg>', 'YouTube': '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" stroke="currentColor" stroke-width="2"/><path d="M10 9v6l5-3z" fill="currentColor"/></svg>'}
+GUIDE_SLUG = "best-paratha-langley"
+GUIDE_DATE = "2026-11-25"
 
 # GoHighLevel inbound-webhook URLs (Automation > Workflows > trigger "Inbound Webhook"). Empty = text/call fallback.
 HOOKS = {"order": "", "club": "", "catering": "", "truck": ""}
@@ -195,9 +200,9 @@ def jsonld_home():
          "offers": {"@type": "Offer", "price": f"{p:.2f}", "priceCurrency": "CAD"}} for (_, n, p, d, _) in c["items"]]} for c in MENU]
     g = [
       {"@type": "Restaurant", "@id": DOMAIN + "/#restaurant", "name": "Paratha Land", "url": DOMAIN + "/",
-       "slogan": "Always made fresh", "logo": DOMAIN + "/brand/logo.jpg", "image": DOMAIN + "/brand/logo.jpg",
+       "slogan": "Always made fresh", "logo": DOMAIN + "/brand/logo.jpg", "image": DOMAIN + "/brand/logo.jpg", "sameAs": SAME_AS,
        "description": "Hand-stuffed Punjabi parathas, rotis, rice bowls, curries, sweets and chai in Langley, BC. Always made fresh. 100% vegetarian. Online ordering for pickup, catering and food truck service for events.",
-       "telephone": "+1-604-340-9237", "address": ADDRESS, "hasMap": MAPS, "priceRange": "$",
+       "telephone": "+1-604-340-9237", "address": ADDRESS, "hasMap": MAPS, "priceRange": "$$",
        "servesCuisine": ["Indian", "Punjabi", "North Indian", "Indian street food", "Vegetarian"],
        "acceptsReservations": False, "hasMenu": {"@id": DOMAIN + "/#menu"}, "areaServed": {"@type": "City", "name": "Langley, BC"},
        "keywords": "paratha Langley, aloo paratha, Indian food Langley, Punjabi food, Indian street food, vegetarian Indian, Indian catering Langley, Indian food truck",
@@ -212,7 +217,7 @@ def jsonld_home():
     return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False)
 
 def jsonld_catering():
-    prov = {"@type": "Restaurant", "@id": DOMAIN + "/#restaurant", "name": "Paratha Land", "slogan": "Always made fresh", "logo": DOMAIN + "/brand/logo.jpg", "telephone": "+1-604-340-9237", "address": ADDRESS, "url": DOMAIN + "/"}
+    prov = {"@type": "Restaurant", "@id": DOMAIN + "/#restaurant", "name": "Paratha Land", "slogan": "Always made fresh", "logo": DOMAIN + "/brand/logo.jpg", "sameAs": SAME_AS, "telephone": "+1-604-340-9237", "address": ADDRESS, "url": DOMAIN + "/"}
     g = [
       prov,
       {"@type": "Service", "@id": DOMAIN + "/catering#catering", "serviceType": "Indian vegetarian catering", "name": "Paratha Land catering",
@@ -223,6 +228,102 @@ def jsonld_catering():
        "provider": {"@id": DOMAIN + "/#restaurant"}, "areaServed": {"@type": "City", "name": "Langley, BC"}, "url": DOMAIN + "/catering#truck"},
       {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"}, {"@type": "ListItem", "position": 2, "name": "Catering & food truck", "item": DOMAIN + "/catering"}]},
       {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in CAT_FAQ]},
+    ]
+    return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False)
+
+
+def price(name):
+    for c in MENU:
+        for (_, n, p, _, _) in c["items"]:
+            if n == name: return f"${p:.2f}"
+    raise KeyError(name)
+
+GUIDE_TYPES = [
+    ("Aloo Paratha", "Spiced mashed potato with green chilli, coriander and onion. The classic, and the one to try first."),
+    ("Gobi Paratha", "Finely grated cauliflower with ginger and spices. Lighter, with a little crunch."),
+    ("Paneer Paratha", "Crumbled paneer with herbs and spices. Rich, soft and filling."),
+    ("Mooli Paratha", "Grated white radish, squeezed dry and spiced. Peppery and fresh."),
+    ("Methi Paratha", "Fresh fenugreek leaves worked into the dough. Slightly bitter in a good way."),
+    ("Mix Veg Paratha", "Chopped mixed vegetables with spices."),
+    ("Makki Methi Paratha", "Maize (corn) flour with fenugreek. A Punjabi winter favourite."),
+    ("Makki Methi Mooli Paratha", "Maize flour with fenugreek and radish."),
+    ("Namak Ajwain Parantha", "No filling: layered with salt and carom seeds. Perfect with chai."),
+    ("Chinni Paratha", "A sweet paratha made with sugar, loved by kids."),
+    ("Plain Paratha", "Flaky and layered, to go with any curry."),
+]
+
+GUIDE_FAQ = [
+  ("Where can I get the best aloo paratha in Langley, BC?", "Paratha Land at 20381 62 Ave, Unit 301, Langley makes hand-stuffed aloo parathas to order, cooked on a hot tawa and served with butter. The Aloo Paratha Plate is the signature dish. Order online for pickup at parathaland.com or call (604) 340-9237."),
+  ("Where can I find Punjabi food in Langley?", "Paratha Land serves Punjabi home-style food in Langley: stuffed parathas, saag with makki roti, chhole poori, rajma chawal, kadhi chawal, dal khichdi, Punjabi sweets like gajar halwa and rasmalai, plus chai and lassi."),
+  ("Is Paratha Land vegetarian?", "Yes. Every item on the Paratha Land menu is vegetarian."),
+  ("What is the difference between a paratha and a roti?", "A roti is a plain, thin whole wheat flatbread cooked dry on a tawa. A paratha is richer: it is layered or stuffed (with potato, cauliflower, paneer or radish) and cooked with ghee or butter until golden and crisp in spots."),
+  ("What do you eat with a paratha?", "Traditionally a paratha comes with a slab of white butter on top, dahi (yogurt) to cool it down and achar (pickle) for heat, with a cup of chai on the side."),
+  ("Does Paratha Land do catering or a food truck in Langley?", "Yes. Paratha Land caters birthdays, office lunches and family functions, and brings its food truck to concerts, festivals, melas and corporate events. Request a quote at parathaland.com/catering."),
+]
+
+def guide_html(links):
+    rows = "".join(f"<tr><th scope=\"row\">{e(n)}</th><td>{e(d)}</td><td class=\"num\">{price(n)}</td></tr>" for n, d in GUIDE_TYPES)
+    soc = " · ".join(f'<a href="{u}" target="_blank" rel="noopener me">{n}</a>' for n, u in SOCIALS)
+    return f"""
+<nav class="toc" aria-label="On this page"><b>On this page</b><ol>
+<li><a href="#great">What makes a great paratha</a></li><li><a href="#which">Which paratha to order</a></li><li><a href="#more">More Punjabi food to try</a></li>
+<li><a href="#eat">How to eat a paratha</a></li><li><a href="#vs">Paratha vs roti vs naan</a></li><li><a href="#order">Ordering, catering and the food truck</a></li><li><a href="#faq">Questions</a></li></ol></nav>
+
+<h2 id="great">What makes a great paratha</h2>
+<p>Every Punjabi family has an opinion on parathas, but the good ones share five things.</p>
+<ol class="steps">
+<li><b>Fresh, rested dough.</b> Whole wheat atta kneaded soft and left to rest, so it rolls thin without tearing.</li>
+<li><b>Filling right to the edges.</b> Potato mashed smooth and spiced well, so every bite has aloo in it, not just the middle.</li>
+<li><b>Rolled thin and even.</b> The belan does the work slowly, so the filling never breaks through.</li>
+<li><b>A hot iron tawa and real ghee.</b> Flipped as it blisters, brushed with ghee, until both sides are golden with crisp brown spots.</li>
+<li><b>Eaten hot.</b> A paratha is at its best within minutes of leaving the tawa, which is why ours are stuffed and rolled to order.</li>
+</ol>
+
+<h2 id="which">Which paratha should you order?</h2>
+<p>New to parathas? Start with aloo. Then work your way through the rest. Prices are for a single paratha at Paratha Land; plates start at {price("Methi Paratha Plate")}, and the signature Aloo Paratha Plate is {price("Aloo Paratha Plate")}.</p>
+<div class="tablewrap"><table><thead><tr><th scope="col">Paratha</th><th scope="col">What's inside</th><th scope="col" class="num">Price</th></tr></thead><tbody>{rows}</tbody></table></div>
+
+<h2 id="more">More Punjabi food worth trying in Langley</h2>
+<p>Parathas are the star, but a proper Punjabi meal has more on the table.</p>
+<ul class="ticks">
+<li><b>Saag and makki roti</b> ({price("Saag And Makki Roti")}): slow-cooked greens with maize-flour roti, the dish Punjab is famous for in winter.</li>
+<li><b>Chhole poori</b> ({price("Chhole Poori Plate")}) and <b>halwa poori</b> ({price("Chhole Halwa Poori Plate")}): spiced chickpeas with puffed pooris, the classic weekend breakfast.</li>
+<li><b>Rajma chawal</b> ({price("Rajma Chawal")}), <b>kadhi chawal</b> ({price("Kadhi Chawal")}) and <b>dal khichdi</b> ({price("Dal Khichdi")}): the comfort food every Punjabi grew up on.</li>
+<li><b>Sweets:</b> gajar halwa ({price("Gajar Halwa")}), moong dal halwa ({price("Moong Dal Halwa")}), rasmalai ({price("Rasmalai")}) and seviyan ({price("Seviyan")}).</li>
+<li><b>Chai and lassi:</b> masala, elaichi, ginger and gurwali chai, dudh patti ({price("Dudh Patti")}), and sweet or salted lassi ({price("Lassi (Sweet)")}).</li>
+</ul>
+<p><a class="inline" href="{links["order"]}">See the full menu with prices</a></p>
+
+<h2 id="eat">How to eat a paratha the Punjabi way</h2>
+<p>Put a slab of white butter on top and let it melt. Tear a piece with your right hand, scoop up some dahi to cool it down, and take a small bite of achar for heat. Keep a cup of chai close. Repeat until the plate is empty.</p>
+
+<h2 id="vs">Paratha vs roti vs naan</h2>
+<ul class="ticks">
+<li><b>Roti</b> is plain whole wheat flatbread, thin and cooked dry on a tawa. It goes with curries every day.</li>
+<li><b>Paratha</b> is richer: layered or stuffed, and cooked with ghee or butter until crisp in spots. It can be a meal on its own.</li>
+<li><b>Naan</b> is made from leavened white flour and baked in a tandoor. It's a restaurant bread more than a home one.</li>
+</ul>
+
+<h2 id="order">Ordering, catering and the food truck</h2>
+<p>Paratha Land is at <b>20381 62 Ave, Unit 301, Langley, BC V3A 5E6</b>. Order online for pickup, call <a class="inline" href="tel:{PHONE}">{PHONE_TXT}</a>, or check <a class="inline" href="{GOOGLE}" target="_blank" rel="noopener">today's hours on Google</a>.</p>
+<p>Feeding a crowd? We cater birthdays, office lunches and family functions, and our food truck can cook parathas fresh on-site at your concert, mela or corporate event. <a class="inline" href="{links["catering"]}">Request a catering quote or book the truck</a>.</p>
+<div class="cta-row"><a class="btn btn-ink" href="{links["order"]}">Order for pickup {ARROW}</a><a class="btn btn-line" style="color:var(--ink);box-shadow:inset 0 0 0 2px var(--line-l)" href="{links["catering"]}">Catering &amp; food truck</a></div>
+<p class="note" style="margin-top:22px">Follow Paratha Land on {soc}.</p>
+"""
+
+def jsonld_guide():
+    url = DOMAIN + "/" + GUIDE_SLUG
+    g = [
+      {"@type": "Article", "@id": url + "#article", "headline": "The best parathas in Langley: a local guide to Punjabi parathas",
+       "description": "What makes a great paratha, which paratha to order, more Punjabi food to try, and where to get hand-stuffed parathas in Langley, BC.",
+       "datePublished": GUIDE_DATE, "dateModified": GUIDE_DATE, "inLanguage": "en-CA", "mainEntityOfPage": url, "image": DOMAIN + "/brand/logo.jpg",
+       "author": {"@type": "Organization", "name": "Paratha Land", "url": DOMAIN + "/"}, "publisher": {"@id": DOMAIN + "/#restaurant"},
+       "about": [{"@type": "Thing", "name": "Paratha"}, {"@type": "Thing", "name": "Punjabi cuisine"}, {"@type": "Place", "name": "Langley, British Columbia"}],
+       "mentions": {"@id": DOMAIN + "/#restaurant"}},
+      {"@type": "Restaurant", "@id": DOMAIN + "/#restaurant", "name": "Paratha Land", "url": DOMAIN + "/", "telephone": "+1-604-340-9237", "address": ADDRESS,
+       "servesCuisine": ["Punjabi", "Indian", "Vegetarian"], "priceRange": "$$", "sameAs": SAME_AS, "logo": DOMAIN + "/brand/logo.jpg", "slogan": "Always made fresh"},
+      {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": DOMAIN + "/"}, {"@type": "ListItem", "position": 2, "name": "Best parathas in Langley", "item": url}]},
+      {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in GUIDE_FAQ]},
     ]
     return json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False)
 
@@ -237,9 +338,9 @@ def chrome(links, active):
 <img src="/brand/belan.png" alt="" width="600" height="87" style="width:180px;height:auto;margin-bottom:18px"><a href="{links["home"]}">Home</a>{"".join(f'<a href="{h}">{t}</a>' for t, h in nav)}<a href="tel:{PHONE}">Call {PHONE_TXT}</a></div>'''
     footer = f'''<footer class="foot"><div class="foot-grid">
 <div><a class="brand" href="{links["home"]}"><img class="foot-logo" src="/brand/logo-mark-cream.png" alt="Paratha Land" width="560" height="139" loading="lazy"></a><p style="margin:18px 0 0;max-width:300px">Hand-stuffed Punjabi parathas, always made fresh in Langley, BC. Fully vegetarian. <span lang="pa" class="pa" style="color:var(--gold)">ਘਰ ਵਰਗਾ ਸੁਆਦ</span></p></div>
-<div><h4>Order</h4><ul><li><a href="{links["order"]}">Pickup menu</a></li><li><a href="{links["rewards"]}">Paratha Club rewards</a></li><li><a href="{links["catering"]}">Catering</a></li><li><a href="{links["truck"]}">Book the food truck</a></li></ul></div>
-<div><h4>Find us</h4><address>20381 62 Ave, Unit 301<br>Langley, BC V3A 5E6<br><a href="tel:{PHONE}">{PHONE_TXT}</a></address></div>
-<div><h4>Google</h4><ul><li><a href="{GOOGLE}" target="_blank" rel="noopener">Hours &amp; reviews</a></li><li><a href="{MAPS}" target="_blank" rel="noopener">Directions</a></li><li><a href="{links["faq"]}">Questions</a></li></ul></div>
+<div><h2 class="fh">Order</h2><ul><li><a href="{links["order"]}">Pickup menu</a></li><li><a href="{links["rewards"]}">Paratha Club rewards</a></li><li><a href="{links["catering"]}">Catering</a></li><li><a href="{links["truck"]}">Book the food truck</a></li></ul></div>
+<div><h2 class="fh">Find us</h2><address>20381 62 Ave, Unit 301<br>Langley, BC V3A 5E6<br><a href="tel:{PHONE}">{PHONE_TXT}</a></address></div>
+<div><h2 class="fh">Follow &amp; find us</h2><div class="socials">{"".join(f'<a href="{u}" target="_blank" rel="noopener me" aria-label="Paratha Land on {n}">{SOCIAL_ICONS[n]}</a>' for n, u in SOCIALS)}</div><ul><li><a href="{GOOGLE}" target="_blank" rel="noopener">Hours &amp; reviews</a></li><li><a href="{MAPS}" target="_blank" rel="noopener">Directions</a></li><li><a href="{links["guide"]}">Best parathas in Langley</a></li><li><a href="{links["faq"]}">Questions</a></li></ul></div>
 </div><div class="foot-base"><span>© <span id="yr">2026</span> Paratha Land, Langley BC</span><span>Paratha · Aloo paratha · Indian street food · Punjabi food in Langley</span></div></footer>'''
     return header, footer
 
@@ -249,23 +350,24 @@ def build(mode):
     else:
         home, cat = "index.html", "catering.html"
     links = {"home": home, "order": f"{home}#order" if mode != "ghl" else "/#order", "rewards": f"{home}#rewards" if mode != "ghl" else "/#rewards",
-             "visit": f"{home}#visit" if mode != "ghl" else "/#visit", "faq": f"{home}#faq" if mode != "ghl" else "/#faq", "catering": cat, "truck": f"{cat}#truck"}
+             "visit": f"{home}#visit" if mode != "ghl" else "/#visit", "faq": f"{home}#faq" if mode != "ghl" else "/#faq", "catering": cat, "truck": f"{cat}#truck", "guide": "/" + GUIDE_SLUG if mode == "ghl" else GUIDE_SLUG + ".html"}
     css = (SRC / "site.css").read_text()
     common = (SRC / "common.js").read_text()
     cfg = "window.PL=" + json.dumps({"phone": PHONE, "gst": 0.05, "hooks": HOOKS, "coupons": COUPONS}) + ";"
     tabs, menu = menu_html()
     out = SRC.parent / "dist" / mode; out.mkdir(parents=True, exist_ok=True)
-    for page, active, ld in [("index", None, jsonld_home()), ("catering", "Catering & truck", jsonld_catering())]:
+    for page, active, ld in [("index", None, jsonld_home()), ("catering", "Catering & truck", jsonld_catering()), ("guide", None, jsonld_guide())]:
         header, footer = chrome(links, active)
         t = (SRC / f"{page}.tpl.html").read_text()
         rep = {"CSS": css, "COMMON_JS": common, "CONFIG": cfg, "HEADER": header, "FOOTER": footer, "JSONLD": ld, "FONTS": FONTS,
                "MENU_TABS": tabs, "MENU_HTML": menu, "HOME_FAQ": faq_html(HOME_FAQ), "CAT_FAQ": faq_html(CAT_FAQ),
                "TRUCK_SVG": TRUCK_SVG, "TRAY_SVG": TRAY_SVG, "ARROW": ARROW, "PHONE": PHONE, "PHONE_TXT": PHONE_TXT,
-               "GOOGLE": GOOGLE, "MAPS": MAPS, "DOMAIN": DOMAIN, **{"L_" + k.upper(): v for k, v in links.items()}}
+               "GOOGLE": GOOGLE, "MAPS": MAPS, "DOMAIN": DOMAIN, "GUIDE_ARTICLE": guide_html(links), "GUIDE_FAQ": faq_html(GUIDE_FAQ), "GUIDE_SLUG": GUIDE_SLUG,
+               "GUIDE_DATE_TXT": "25 November 2026", "GUIDE_DATE": GUIDE_DATE, **{"L_" + k.upper(): v for k, v in links.items()}}
         if page == "index":
             rep["SCENE_JS"] = (SRC / "scene.js").read_text(); rep["ORDER_JS"] = (SRC / "order.js").read_text()
         t = re.sub(r"\{\{(\w+)\}\}", lambda m: rep[m.group(1)], t)
-        (out / f"{page}.html").write_text(t)
+        (out / (f"{GUIDE_SLUG}.html" if page == "guide" else f"{page}.html")).write_text(t)
     return out
 
 if __name__ == "__main__":

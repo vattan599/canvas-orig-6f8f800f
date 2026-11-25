@@ -484,7 +484,7 @@ svg {
   grid-template-columns: 1.3fr 1fr 1fr 1fr;
   gap: 40px;
 }
-.foot h4 {
+.foot .fh {
   font: 400 14px/1 var(--stamp);
   color: var(--gold);
   margin: 0 0 16px;
@@ -594,6 +594,31 @@ svg {
     opacity: 1;
     transform: none;
   }
+}
+.socials {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-d);
+  border-radius: 50%;
+  color: var(--gold);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.socials a:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.socials svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* ---------- 3D stage ---------- */

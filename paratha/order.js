@@ -22,8 +22,8 @@
   }
 
   const drawer = $('#cart'), scrim = $('#scrim');
-  const open = () => { drawer.classList.add('open'); scrim.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); setTimeout(() => $('#cart .x').focus(), 50); };
-  const close = () => { drawer.classList.remove('open'); scrim.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); };
+  const open = () => { drawer.inert = false; drawer.classList.add('open'); scrim.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); setTimeout(() => $('#cart .x').focus(), 50); };
+  const close = () => { drawer.classList.remove('open'); scrim.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); drawer.inert = true; };
   $$('[data-cart-open]').forEach(b => b.addEventListener('click', open));
   $$('[data-cart-close]').forEach(b => b.addEventListener('click', close));
   scrim.addEventListener('click', close);

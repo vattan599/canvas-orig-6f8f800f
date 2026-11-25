@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BestParathaLangleyRouteImport } from './routes/best-paratha-langley'
 import { Route as CateringRouteImport } from './routes/catering'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestParathaLangleyRoute = BestParathaLangleyRouteImport.update({
+  id: '/best-paratha-langley',
+  path: '/best-paratha-langley',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CateringRoute = CateringRouteImport.update({
@@ -25,27 +31,31 @@ const CateringRoute = CateringRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/best-paratha-langley': typeof BestParathaLangleyRoute
   '/catering': typeof CateringRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/best-paratha-langley': typeof BestParathaLangleyRoute
   '/catering': typeof CateringRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/best-paratha-langley': typeof BestParathaLangleyRoute
   '/catering': typeof CateringRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catering'
+  fullPaths: '/' | '/best-paratha-langley' | '/catering'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catering'
-  id: '__root__' | '/' | '/catering'
+  to: '/' | '/best-paratha-langley' | '/catering'
+  id: '__root__' | '/' | '/best-paratha-langley' | '/catering'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BestParathaLangleyRoute: typeof BestParathaLangleyRoute
   CateringRoute: typeof CateringRoute
 }
 
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/best-paratha-langley': {
+      id: '/best-paratha-langley'
+      path: '/best-paratha-langley'
+      fullPath: '/best-paratha-langley'
+      preLoaderRoute: typeof BestParathaLangleyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/catering': {
@@ -70,6 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BestParathaLangleyRoute: BestParathaLangleyRoute,
   CateringRoute: CateringRoute,
 }
 export const routeTree = rootRouteImport
