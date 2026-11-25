@@ -5,7 +5,7 @@ import cateringCss from "../paratha/catering.css?url";
 import { CAT_BODY, CAT_JSONLD, CONFIG, FONTS_HREF } from "../paratha/content.gen";
 import { init as initCommon } from "../paratha/common";
 
-const SITE = "https://parathaland.ca";
+const SITE = "https://parathaland.com";
 const OG_IMAGE =
   "https://vibe.filesafe.space/1795068409232920594/assets/4d74c7ff-273e-4b5a-ab9e-40dc3b632cd2.jpg";
 const TITLE = "Indian Catering & Food Truck in Langley, BC | Paratha Land";

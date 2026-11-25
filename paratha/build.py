@@ -4,7 +4,7 @@
    Edit MENU, COUPONS and HOOKS below, then rebuild."""
 import json, html, re, pathlib
 SRC = pathlib.Path(__file__).parent
-DOMAIN = "https://parathaland.ca"
+DOMAIN = "https://parathaland.com"
 PHONE, PHONE_TXT = "+16043409237", "(604) 340-9237"
 GOOGLE = "https://share.google/xiSuF9gGfN1qYML7r"
 MAPS = "https://www.google.com/maps/search/?api=1&query=Paratha+Land+20381+62+Ave+Unit+301+Langley+BC"
