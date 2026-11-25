@@ -11,7 +11,7 @@ const OG_IMAGE =
   "https://vibe.filesafe.space/1795068409232920594/assets/4d74c7ff-273e-4b5a-ab9e-40dc3b632cd2.jpg";
 const TITLE = "Paratha Land | Aloo Paratha & Punjabi Food in Langley, BC – Order Online";
 const DESC =
-  "Hand-stuffed aloo, gobi and paneer parathas, curries and rice bowls in Langley, BC. 100% vegetarian Punjabi food. Order online for pickup at in-store prices, plus catering and food truck for events.";
+  "Hand-stuffed aloo, gobi and paneer parathas, curries, rice bowls, Punjabi sweets and chai in Langley, BC. 100% vegetarian. Order online for pickup, plus catering and food truck for events.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
