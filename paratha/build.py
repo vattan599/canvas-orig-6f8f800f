@@ -183,14 +183,14 @@ def jsonld_catering():
 def chrome(links, active):
     nav = [("Menu", links["order"]), ("Catering & truck", links["catering"]), ("Rewards", links["rewards"]), ("Visit", links["visit"])]
     lis = "".join(f'<li><a href="{h}"{" aria-current=\"page\"" if t == active else ""}>{t}</a></li>' for t, h in nav)
-    header = f'''<header class="nav"><a class="brand" href="{links["home"]}"><img class="brand-logo" src="/brand/logo-on-maroon.png" alt="Paratha Land, always made fresh" width="480" height="163"></a>
+    header = f'''<header class="nav"><a class="brand" href="{links["home"]}"><img class="brand-logo" src="/brand/logo-mark-cream.png" alt="Paratha Land" width="560" height="139"></a>
 <nav aria-label="Main"><ul>{lis}</ul></nav>
 <a class="btn btn-gold nav-cta" href="{links["order"]}">Order pickup</a>
 <button class="burger" type="button" data-menu-open aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></header>
 <div class="mnav" role="dialog" aria-label="Menu"><button class="burger x" type="button" data-menu-close aria-label="Close menu" style="display:block"><svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 <img src="/brand/belan.png" alt="" width="600" height="87" style="width:180px;height:auto;margin-bottom:18px"><a href="{links["home"]}">Home</a>{"".join(f'<a href="{h}">{t}</a>' for t, h in nav)}<a href="tel:{PHONE}">Call {PHONE_TXT}</a></div>'''
     footer = f'''<footer class="foot"><div class="foot-grid">
-<div><a class="brand" href="{links["home"]}"><img class="foot-logo" src="/brand/logo-on-maroon.png" alt="Paratha Land, always made fresh" width="480" height="163" loading="lazy"></a><p style="margin:18px 0 0;max-width:300px">Hand-stuffed Punjabi parathas, always made fresh in Langley, BC. Fully vegetarian. <span lang="pa" class="pa" style="color:var(--gold)">ਘਰ ਵਰਗਾ ਸੁਆਦ</span></p></div>
+<div><a class="brand" href="{links["home"]}"><img class="foot-logo" src="/brand/logo-mark-cream.png" alt="Paratha Land" width="560" height="139" loading="lazy"></a><p style="margin:18px 0 0;max-width:300px">Hand-stuffed Punjabi parathas, always made fresh in Langley, BC. Fully vegetarian. <span lang="pa" class="pa" style="color:var(--gold)">ਘਰ ਵਰਗਾ ਸੁਆਦ</span></p></div>
 <div><h4>Order</h4><ul><li><a href="{links["order"]}">Pickup menu</a></li><li><a href="{links["rewards"]}">Paratha Club rewards</a></li><li><a href="{links["catering"]}">Catering</a></li><li><a href="{links["truck"]}">Book the food truck</a></li></ul></div>
 <div><h4>Find us</h4><address>20381 62 Ave, Unit 301<br>Langley, BC V3A 5E6<br><a href="tel:{PHONE}">{PHONE_TXT}</a></address></div>
 <div><h4>Google</h4><ul><li><a href="{GOOGLE}" target="_blank" rel="noopener">Hours &amp; reviews</a></li><li><a href="{MAPS}" target="_blank" rel="noopener">Directions</a></li><li><a href="{links["faq"]}">Questions</a></li></ul></div>
