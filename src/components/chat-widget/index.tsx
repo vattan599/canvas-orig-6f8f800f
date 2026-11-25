@@ -14,6 +14,7 @@ export function ChatWidget() {
   const [consentGiven, setConsentGiven] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [openIntent, setOpenIntent] = useState(false);
+  const openIntentRef = useRef(false);
 
   const chatRef = useRef<any>(null);
   const unsubRef = useRef<(() => void) | null>(null);
@@ -48,7 +49,8 @@ export function ChatWidget() {
         unsubRef.current = unsub;
         const def = chat.getState?.()?.config?.compliance?.defaultConsentCheck;
         if (typeof def === "boolean") setConsentGiven(def);
-        if (openIntent) {
+        // Honour an open intent that was set before the client was ready.
+        if (openIntentRef.current) {
           chat.setPanelOpen(true);
           await chat.open();
         }
@@ -93,7 +95,7 @@ export function ChatWidget() {
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openIntent, chatRef.current]);
+  }, [openIntent, s.isOpen]);
 
   // prefetch on idle
   useEffect(() => {
@@ -108,6 +110,7 @@ export function ChatWidget() {
       chatRef.current.setPanelOpen(true);
       chatRef.current.open();
     } else {
+      openIntentRef.current = true;
       setOpenIntent(true);
     }
   };
