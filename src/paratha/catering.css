@@ -13,6 +13,7 @@ body {
   --gold: #f3b53f;
   --gold2: #ffd27a;
   --marigold: #ee7a1c;
+  --accent: #a8480a;
   --pink: #e04d7c;
   --green: #2e6b3c;
   --cream: #fbf1dc;
@@ -86,13 +87,53 @@ svg {
   inset: 0 0 auto;
   z-index: 40;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 18px;
-  padding: 14px var(--pad);
+  padding: 0 var(--pad) 12px;
   transition:
     background 0.4s,
     box-shadow 0.4s;
+}
+.nav nav,
+.nav .nav-cta,
+.nav .burger {
+  margin-top: 16px;
+}
+.nav nav {
+  padding-top: 12px;
+}
+.nav .brand {
+  position: relative;
+  display: block;
+  flex: none;
+  background: var(--cream);
+  padding: 20px 18px 20px;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 16px 30px -14px rgba(0, 0, 0, 0.65);
+  transition: padding 0.35s var(--ease);
+}
+.nav .brand::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  border-radius: 0 0 10px 10px;
+  background: var(--phulkari) repeat-x center/auto 8px;
+}
+.nav .brand-logo {
+  display: block;
+  width: 128px;
+  height: auto;
+  transition: width 0.35s var(--ease);
+}
+.nav.solid .brand {
+  padding: 12px 14px 16px;
+}
+.nav.solid .brand-logo {
+  width: 104px;
 }
 .nav.solid {
   background: rgba(42, 6, 12, 0.92);
@@ -106,26 +147,14 @@ svg {
   gap: 12px;
   text-decoration: none;
 }
-.brand-mark {
-  width: 44px;
-  height: 44px;
-  flex: none;
-}
-.brand b {
+.foot-logo {
   display: block;
-  font: 400 25px/1 var(--display);
-  color: var(--cream);
-  letter-spacing: 0.005em;
-}
-.brand small {
-  display: block;
-  font: 700 13px/1.2 var(--body);
-  color: var(--gold);
-  margin-top: 3px;
+  width: 190px;
+  height: auto;
 }
 .nav ul {
   display: flex;
-  gap: 28px;
+  gap: 24px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -283,7 +312,7 @@ svg {
   position: relative;
 }
 .light .stamp {
-  color: var(--marigold);
+  color: var(--accent);
 }
 .sec {
   padding: clamp(64px, 9vw, 120px) var(--pad);
@@ -299,7 +328,7 @@ svg {
   text-wrap: balance;
 }
 .h2 .hi {
-  color: var(--marigold);
+  color: var(--accent);
 }
 .dark .h2 .hi {
   color: var(--gold);
@@ -348,7 +377,7 @@ svg {
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--marigold);
+  border-color: var(--accent);
   outline: none;
 }
 .grid2 {
@@ -430,7 +459,7 @@ svg {
 .faq summary::after {
   content: "+";
   font: 400 30px/1 var(--display);
-  color: var(--marigold);
+  color: var(--accent);
   transition: transform 0.3s var(--ease);
 }
 .faq details[open] summary::after {
@@ -455,7 +484,7 @@ svg {
   grid-template-columns: 1.3fr 1fr 1fr 1fr;
   gap: 40px;
 }
-.foot h4 {
+.foot .fh {
   font: 400 14px/1 var(--stamp);
   color: var(--gold);
   margin: 0 0 16px;
@@ -536,8 +565,18 @@ svg {
   .foot-grid {
     grid-template-columns: 1fr;
   }
-  .brand b {
-    font-size: 22px;
+  .nav .brand {
+    padding: 14px 12px 16px;
+  }
+  .nav .brand-logo,
+  .nav.solid .brand-logo {
+    width: 96px;
+  }
+  .nav.solid .brand {
+    padding: 10px 12px 14px;
+  }
+  .nav .burger {
+    margin-top: 12px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -555,6 +594,31 @@ svg {
     opacity: 1;
     transform: none;
   }
+}
+.socials {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-d);
+  border-radius: 50%;
+  color: var(--gold);
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.socials a:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+.socials svg {
+  width: 20px;
+  height: 20px;
 }
 
 .c-hero {
@@ -634,7 +698,7 @@ svg {
 .how li b {
   display: block;
   font: 700 34px/1 var(--body);
-  color: var(--marigold);
+  color: var(--accent);
   margin-bottom: 12px;
 }
 .how h3 {
@@ -699,7 +763,7 @@ svg {
 }
 .fsec {
   font: 400 15px/1 var(--stamp);
-  color: var(--marigold);
+  color: var(--accent);
   margin: 8px 0 -4px;
 }
 .crumbs {

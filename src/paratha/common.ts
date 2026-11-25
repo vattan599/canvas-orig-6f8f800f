@@ -59,6 +59,61 @@ export function init(signal: AbortSignal) {
   };
   PL.sms = (text) => "sms:" + PL.phone + "?&body=" + encodeURIComponent(text);
   PL.money = (n) => "$" + n.toFixed(2);
+  /* opening hours: highlight today and show open/closed in Langley time */
+  const hl = document.querySelector(".hours");
+  if (hl) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Vancouver",
+      weekday: "long",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).formatToParts(new Date());
+    const g = (t) => parts.find((p) => p.type === t).value;
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const di = days.indexOf(g("weekday")),
+      now = (+g("hour") % 24) * 60 + +g("minute");
+    const spans = (i) => {
+      const li = hl.querySelector('[data-day="' + days[(i + 7) % 7] + '"]');
+      return li && li.dataset.spans
+        ? li.dataset.spans
+            .split(",")
+            .map((s) => s.split("-").map((t) => +t.slice(0, 2) * 60 + +t.slice(2)))
+        : [];
+    };
+    const fmt = (m) => {
+      const h = Math.floor(m / 60) % 24,
+        mm = m % 60;
+      return (
+        (h % 12 || 12) +
+        (mm ? ":" + String(mm).padStart(2, "0") : "") +
+        (h < 12 ? " a.m." : " p.m.")
+      );
+    };
+    let until = null;
+    for (const [a, b] of spans(di)) if (b > a ? now >= a && now < b : now >= a) until = b;
+    for (const [a, b] of spans(di - 1)) if (b < a && now < b) until = b;
+    let msg;
+    if (until !== null) msg = "Open now · until " + fmt(until);
+    else {
+      for (let k = 0; k < 8 && !msg; k++)
+        for (const [a] of spans(di + k))
+          if (k > 0 || a > now) {
+            msg =
+              "Closed now · opens " +
+              (k === 0 ? "at " : k === 1 ? "tomorrow at " : days[(di + k) % 7] + " at ") +
+              fmt(a);
+            break;
+          }
+    }
+    const today = hl.querySelector('[data-day="' + days[di] + '"]');
+    if (today) today.classList.add("today");
+    const o = document.querySelector(".js-open");
+    if (o && msg) {
+      o.textContent = msg;
+      o.hidden = false;
+    }
+  }
   const y = document.getElementById("yr");
   if (y) y.textContent = new Date().getFullYear();
 
