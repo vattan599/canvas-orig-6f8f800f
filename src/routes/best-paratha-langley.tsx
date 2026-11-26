@@ -7,9 +7,9 @@ import { init as initCommon } from "../paratha/common";
 
 const SITE = "https://parathaland.com";
 const URL = `${SITE}/best-paratha-langley`;
-const TITLE = "Best Parathas in Langley, BC: A Guide to Punjabi Parathas | Paratha Land";
+const TITLE = "Best Parathas in Langley, BC | Paratha Land — Fresh Paratha Delivery";
 const DESC =
-  "Looking for the best aloo paratha or Punjabi food in Langley? What makes a great paratha, which one to order, more Punjabi dishes to try, and where to get them hot off the tawa.";
+  "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.";
 
 export const Route = createFileRoute("/best-paratha-langley")({
   head: () => ({
@@ -22,7 +22,10 @@ export const Route = createFileRoute("/best-paratha-langley")({
       { name: "theme-color", content: "#3d0a12" },
       { property: "og:type", content: "article" },
       { property: "og:site_name", content: "Paratha Land" },
-      { property: "og:title", content: "The best parathas in Langley: a local guide" },
+      {
+        property: "og:title",
+        content: "Best Parathas in Langley, BC | Paratha Land — Fresh Paratha Delivery",
+      },
       { property: "og:description", content: DESC },
       { property: "og:url", content: URL },
       { property: "og:image", content: `${SITE}/brand/logo.jpg` },

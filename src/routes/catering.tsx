@@ -8,9 +8,9 @@ import { init as initCommon } from "../paratha/common";
 const SITE = "https://parathaland.com";
 const OG_IMAGE =
   "https://vibe.filesafe.space/1795068409232920594/assets/4d74c7ff-273e-4b5a-ab9e-40dc3b632cd2.jpg";
-const TITLE = "Indian Catering & Food Truck in Langley, BC | Paratha Land";
+const TITLE = "Paratha Land | Fresh Paratha Delivery in Langley, BC — Catering & Food Truck";
 const DESC =
-  "Vegetarian Punjabi catering for birthdays, office lunches and family functions, plus the Paratha Land food truck for concerts, festivals, melas and corporate events. Request a quote.";
+  "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.";
 
 export const Route = createFileRoute("/catering")({
   head: () => ({
@@ -23,11 +23,14 @@ export const Route = createFileRoute("/catering")({
       { name: "theme-color", content: "#3d0a12" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Paratha Land" },
-      { property: "og:title", content: "Paratha Land catering & food truck" },
+      {
+        property: "og:title",
+        content: "Paratha Land | Fresh Paratha Delivery in Langley, BC — Catering & Food Truck",
+      },
       {
         property: "og:description",
         content:
-          "Fresh parathas, curries and rice for your party, office or festival, delivered as catering or cooked on-site from our food truck.",
+          "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.",
       },
       { property: "og:url", content: `${SITE}/catering` },
       { property: "og:image", content: OG_IMAGE },

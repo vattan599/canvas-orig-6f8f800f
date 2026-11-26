@@ -79,17 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Paratha Land | Punjabi parathas in Langley, BC" },
+      { title: "Paratha Land | Fresh Paratha Delivery in Langley, BC" },
       {
         name: "description",
         content:
-          "Hand-stuffed Punjabi parathas, curries and rice bowls in Langley, BC. Order online for pickup.",
+          "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.",
       },
       { name: "author", content: "Paratha Land" },
-      { property: "og:title", content: "Paratha Land" },
+      { property: "og:title", content: "Paratha Land | Fresh Paratha Delivery in Langley, BC" },
       {
         property: "og:description",
-        content: "Hand-stuffed Punjabi parathas in Langley, BC. Always made fresh.",
+        content:
+          "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

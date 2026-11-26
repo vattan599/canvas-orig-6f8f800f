@@ -9,9 +9,9 @@ import { init as initOrder } from "../paratha/order";
 const SITE = "https://parathaland.com";
 const OG_IMAGE =
   "https://vibe.filesafe.space/1795068409232920594/assets/4d74c7ff-273e-4b5a-ab9e-40dc3b632cd2.jpg";
-const TITLE = "Paratha Land | Aloo Paratha & Punjabi Food in Langley, BC – Order Online";
+const TITLE = "Paratha Land | Fresh Paratha Delivery in Langley, BC";
 const DESC =
-  "Hand-stuffed aloo, gobi and paneer parathas, curries, rice bowls, Punjabi sweets and chai in Langley, BC. 100% vegetarian. Order online for pickup, plus catering and food truck for events.";
+  "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,11 +24,11 @@ export const Route = createFileRoute("/")({
       { name: "theme-color", content: "#3d0a12" },
       { property: "og:type", content: "restaurant.restaurant" },
       { property: "og:site_name", content: "Paratha Land" },
-      { property: "og:title", content: "Paratha Land: hand-stuffed parathas in Langley, BC" },
+      { property: "og:title", content: "Paratha Land | Fresh Paratha Delivery in Langley, BC" },
       {
         property: "og:description",
         content:
-          "Aloo, gobi, paneer and makki methi parathas, made fresh. Order online for pickup, or book catering and our food truck.",
+          "Langley's paratha kitchen: fresh aloo, paneer, gobi & plain parathas with curd and pickle. Order online for pickup or delivery and earn rewards on every order.",
       },
       { property: "og:url", content: `${SITE}/` },
       { property: "og:image", content: OG_IMAGE },
